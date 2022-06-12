@@ -74,8 +74,8 @@ if __name__ == "__main__":
     model_name = "bert-base-uncased"
     num_labels = -1
     max_length = 512
-    do_lower_case = False
+    do_lower_case = True
     model_provider = "tensorflow"
     app = "fill_mask"
     output_path = f"{os.path.expanduser('~')}/Workspace/deep-learning-scala/build/huggingface"
-    download_hf_model(app, model_provider, model_name, max_length, do_lower_case=False, output_path=output_path)
+    download_hf_model(app, model_provider, model_name, max_length, do_lower_case=True, output_path=output_path)
