@@ -1,4 +1,4 @@
-package ai.dhu.pytorch
+package ai.dhu.tensorflow
 
 import ai.djl.repository.zoo.ModelZoo
 import org.slf4j.LoggerFactory

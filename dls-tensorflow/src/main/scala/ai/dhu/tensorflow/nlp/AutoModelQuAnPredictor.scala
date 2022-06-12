@@ -1,12 +1,9 @@
-package ai.dhu.pytorch.nlp
+package ai.dhu.tensorflow.nlp
 
 import ai.djl.Application
 import ai.djl.modality.nlp.qa.QAInput
-import ai.djl.repository.zoo.{Criteria, ModelZoo}
+import ai.djl.repository.zoo.Criteria
 import ai.djl.training.util.ProgressBar
-
-import scala.jdk.CollectionConverters._
-
 
 
 object AutoModelQuAnPredictor {
@@ -29,7 +26,6 @@ object AutoModelQuAnPredictor {
     val predictor = model.newPredictor
     val answer = predictor.predict(input)
 
-//    ModelZoo.listModels().asScala.foreach(i => i._2.asScala.foreach(r => println(r.toString)))
     println(answer)
   }
 }
