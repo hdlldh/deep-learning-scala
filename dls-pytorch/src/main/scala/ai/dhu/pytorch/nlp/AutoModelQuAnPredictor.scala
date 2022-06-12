@@ -2,8 +2,11 @@ package ai.dhu.pytorch.nlp
 
 import ai.djl.Application
 import ai.djl.modality.nlp.qa.QAInput
-import ai.djl.repository.zoo.Criteria
+import ai.djl.repository.zoo.{Criteria, ModelZoo}
 import ai.djl.training.util.ProgressBar
+
+import scala.jdk.CollectionConverters._
+
 
 
 object AutoModelQuAnPredictor {
@@ -18,13 +21,15 @@ object AutoModelQuAnPredictor {
     val criteria = Criteria.builder
       .optApplication(Application.NLP.QUESTION_ANSWER)
       .setTypes(classOf[QAInput], classOf[String])
-      .optFilter("modelType", "distilbert")
+      .optFilter("backbone", "bert")
       .optEngine("PyTorch")
       .optProgress(new ProgressBar).build
 
     val model = criteria.loadModel
     val predictor = model.newPredictor
     val answer = predictor.predict(input)
+
+//    ModelZoo.listModels().asScala.foreach(i => i._2.asScala.foreach(r => println(r.toString)))
     println(answer)
   }
 }

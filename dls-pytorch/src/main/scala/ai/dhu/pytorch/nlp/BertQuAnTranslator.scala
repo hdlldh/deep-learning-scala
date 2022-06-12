@@ -18,7 +18,7 @@ class BertQuAnTranslator extends Translator[QAInput, String] {
 
   @throws[IOException]
   override def prepare(ctx: TranslatorContext): Unit = {
-    val path = Paths.get("build/pytorch/bert-qa/vocab.json")
+    val path = Paths.get("build/pytorch/bert-qa/vocab.txt")
     vocabulary = DefaultVocabulary
       .builder
       .optMinFrequency(1)
@@ -26,6 +26,7 @@ class BertQuAnTranslator extends Translator[QAInput, String] {
       .optUnknownToken("[UNK]")
       .build
     tokenizer = new BertTokenizer()
+
   }
 
   override def getBatchifier: Batchifier = Batchifier.STACK
@@ -48,20 +49,11 @@ class BertQuAnTranslator extends Translator[QAInput, String] {
   }
 
   override def processOutput(ctx: TranslatorContext, list: NDList): String = {
-    println(list)
     val startLogits = list.get(0)
     val endLogits = list.get(1)
-    println(startLogits)
-    println(endLogits)
     val startIdx = startLogits.argMax().getLong().asInstanceOf[Int]
     val endIdx = endLogits.argMax().getLong().asInstanceOf[Int]
-    println(startIdx)
-    println(endIdx)
-    if (startIdx > endIdx) {
-      tokenList.subList(endIdx, startIdx + 1).toString
-    } else {
-      tokenList.subList(startIdx, endIdx + 1).toString
-    }
+    tokenList.subList(startIdx, endIdx + 1).toString
   }
 
 }
