@@ -1,4 +1,4 @@
-package ai.dhu.mxnet_nlp
+package ai.dhu.pytorch.nlp
 
 import ai.djl.modality.nlp.qa.QAInput
 import ai.djl.repository.zoo.Criteria
@@ -18,7 +18,7 @@ object BertQuAnPredictor {
     val translator = new BertQuAnTranslator()
     val criteria = Criteria.builder
       .setTypes(classOf[QAInput], classOf[String])
-      .optModelPath(Paths.get("build/mxnet/bertqa/"))
+      .optModelPath(Paths.get("build/pytorch/bert-qa/"))
       .optTranslator(translator)
       .optProgress(new ProgressBar).build
 
@@ -30,11 +30,8 @@ object BertQuAnPredictor {
 
     predictor.close()
 
-
     System.out.println(question)
     System.out.println(predictResult)
-
   }
-
 
 }

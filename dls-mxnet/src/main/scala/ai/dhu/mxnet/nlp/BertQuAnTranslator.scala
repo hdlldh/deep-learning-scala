@@ -1,4 +1,4 @@
-package ai.dhu.mxnet_nlp
+package ai.dhu.mxnet.nlp
 
 import ai.djl.modality.nlp.DefaultVocabulary
 import ai.djl.modality.nlp.bert.BertTokenizer
@@ -16,11 +16,11 @@ class BertQuAnTranslator extends NoBatchifyTranslator[QAInput, String] {
 
   private var vocabulary: DefaultVocabulary = _
   private var tokenizer: BertTokenizer = _
-  private var tokenList: util.List[String] = new util.ArrayList[String]()
+  private var tokenList: util.List[String] = _
 
   @throws[IOException]
   override def prepare(ctx: TranslatorContext): Unit = {
-    val path = Paths.get("build/mxnet/bertqa/vocab.json").toUri.toURL
+    val path = Paths.get("build/mxnet/bert-qa/vocab.json").toUri.toURL
     vocabulary = DefaultVocabulary
       .builder
       .optMinFrequency(1)

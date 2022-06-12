@@ -1,4 +1,4 @@
-package ai.dhu.tensorflow_nlp
+package ai.dhu.tensorflow.nlp
 
 import ai.djl.modality.Classifications
 import ai.djl.modality.nlp.DefaultVocabulary
@@ -11,7 +11,7 @@ import java.nio.file.Paths
 object BertRankPredictor {
   def main(args: Array[String]): Unit = {
 
-    val modelDir = Paths.get("build/tensorflow/bert_rank")
+    val modelDir = Paths.get("build/tensorflow/bert-rank")
     val vocabFile = modelDir.resolve("vocab.txt")
     val vocabulary = DefaultVocabulary
       .builder

@@ -1,4 +1,4 @@
-package ai.dhu.tensorflow_nlp
+package ai.dhu.tensorflow.nlp
 
 import ai.djl.training.util.{DownloadUtils, ProgressBar}
 import ai.djl.util.ZipUtils
@@ -12,7 +12,7 @@ object BertRankDownloader {
     DownloadUtils.download(modelUrl, "build/tensorflow/amazon_review_rank_classification.zip", new ProgressBar)
     val zipFile = Paths.get("build/tensorflow/bert_review_rank_classification.zip")
 
-    val modelDir = Paths.get("build/tensorflow/bert_rank")
+    val modelDir = Paths.get("build/tensorflow/bert-rank")
     if (Files.notExists(modelDir)) ZipUtils.unzip(Files.newInputStream(zipFile), modelDir)
   }
 }

@@ -1,4 +1,4 @@
-package ai.dhu.pytorch_cv
+package ai.dhu.pytorch.cv
 
 import ai.djl.training.util.{DownloadUtils, ProgressBar}
 

@@ -3,6 +3,7 @@ target/
 .bsp/
 resources/
 build/
+jupyter/
 
 # Vim stuff
 *.swp

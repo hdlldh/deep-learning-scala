@@ -1,4 +1,4 @@
-package ai.dhu.mxnet_nlp
+package ai.dhu.mxnet.nlp
 
 import ai.djl.util.JsonUtils
 import com.google.gson.annotations.SerializedName

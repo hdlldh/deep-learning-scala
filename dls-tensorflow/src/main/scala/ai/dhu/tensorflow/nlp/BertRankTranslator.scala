@@ -1,25 +1,19 @@
-package ai.dhu.tensorflow_nlp
+package ai.dhu.tensorflow.nlp
 
 import ai.djl.modality.Classifications
 import ai.djl.modality.nlp.Vocabulary
 import ai.djl.modality.nlp.bert.BertFullTokenizer
 import ai.djl.ndarray.NDList
-import ai.djl.translate.{Translator, TranslatorContext}
+import ai.djl.translate.{Batchifier, Translator, TranslatorContext}
 
 import java.util
 
 class BertRankTranslator(var tokenizer: BertFullTokenizer, var length: Int) extends Translator[String, Classifications] {
 
-//  private var tokenizer: BertFullTokenizer = tokenizer
-//  private var length = 0
   private val vocab: Vocabulary = tokenizer.getVocabulary
   private val ranks: util.List[String] = util.Arrays.asList("1", "2", "3", "4", "5")
 
-
-  import ai.djl.translate.Batchifier
-
   override def getBatchifier: Batchifier = Batchifier.STACK
-
 
   override def processInput(ctx: TranslatorContext, input: String): NDList = {
     val tokens = this.tokenizer.tokenize(input)
