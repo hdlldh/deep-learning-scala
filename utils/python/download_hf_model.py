@@ -43,6 +43,7 @@ def download_hf_model(app, model_provider, model_name, max_length, num_labels=-1
         input_ids = inputs["input_ids"]
         attention_mask = inputs["attention_mask"]
         traced_model = torch.jit.trace(model, (input_ids, attention_mask))
+        model_name = model_name.split("/")[-1]
         torch.jit.save(traced_model, model_name + ".pt")
         os.makedirs(os.path.join(output_path, app, model_provider, model_name), exist_ok=True)
         shutil.move(model_name + ".pt", os.path.join(output_path, app, model_provider, model_name, model_name + ".pt"))
@@ -64,6 +65,7 @@ def download_hf_model(app, model_provider, model_name, max_length, num_labels=-1
         else:
             print("Unknown application: " + app)
             return
+        model_name = model_name.split("/")[-1]
         model.save(os.path.join(output_path, app, model_provider, model_name))
         tokenizer.save_pretrained(os.path.join(output_path, app, model_provider, model_name))
 
@@ -71,11 +73,12 @@ def download_hf_model(app, model_provider, model_name, max_length, num_labels=-1
 if __name__ == "__main__":
     print('Transformers version: ', transformers.__version__)
 
-    model_name = "bert-base-uncased"
+#     model_name = "bert-base-uncased"
+    model_name = "deepset/bert-base-cased-squad2"
     num_labels = -1
     max_length = 512
-    do_lower_case = True
-    model_provider = "tensorflow"
-    app = "fill_mask"
+    do_lower_case = False
+    model_provider = "pytorch"
+    app = "question_answering"
     output_path = f"{os.path.expanduser('~')}/Workspace/deep-learning-scala/build/huggingface"
-    download_hf_model(app, model_provider, model_name, max_length, do_lower_case=True, output_path=output_path)
+    download_hf_model(app, model_provider, model_name, max_length, do_lower_case=do_lower_case, output_path=output_path)
