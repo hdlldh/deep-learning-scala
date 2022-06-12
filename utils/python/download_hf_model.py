@@ -77,4 +77,5 @@ if __name__ == "__main__":
     do_lower_case = False
     model_provider = "tensorflow"
     app = "fill_mask"
-    download_hf_model(app, model_provider, model_name, max_length, do_lower_case=False, output_path=f"{os.path.expanduser('~')}/Workspace/deep-learning-scala/build/huggingface")
+    output_path = f"{os.path.expanduser('~')}/Workspace/deep-learning-scala/build/huggingface"
+    download_hf_model(app, model_provider, model_name, max_length, do_lower_case=False, output_path=output_path)
