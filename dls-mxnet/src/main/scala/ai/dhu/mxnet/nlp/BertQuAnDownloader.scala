@@ -20,6 +20,7 @@ object BertQuAnDownloader {
     DownloadUtils.download(
       "https://djl-ai.s3.amazonaws.com/mlrepo/model/nlp/question_answer/ai/djl/mxnet/bertqa/0.0.1/static_bert_qa-0002.params.gz",
       "build/mxnet/bert-qa/bert-qa-0000.params",
-      new ProgressBar)
+      new ProgressBar
+    )
   }
 }

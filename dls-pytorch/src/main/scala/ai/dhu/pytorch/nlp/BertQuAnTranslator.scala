@@ -1,14 +1,14 @@
 package ai.dhu.pytorch.nlp
 
+import java.io.IOException
+import java.nio.file.Paths
+import java.util
+
 import ai.djl.modality.nlp.DefaultVocabulary
 import ai.djl.modality.nlp.bert.BertTokenizer
 import ai.djl.modality.nlp.qa.QAInput
 import ai.djl.ndarray.NDList
 import ai.djl.translate.{Batchifier, Translator, TranslatorContext}
-
-import java.io.IOException
-import java.nio.file.Paths
-import java.util
 
 class BertQuAnTranslator extends Translator[QAInput, String] {
 
@@ -19,8 +19,7 @@ class BertQuAnTranslator extends Translator[QAInput, String] {
   @throws[IOException]
   override def prepare(ctx: TranslatorContext): Unit = {
     val path = Paths.get("build/pytorch/bert-qa/vocab.txt")
-    vocabulary = DefaultVocabulary
-      .builder
+    vocabulary = DefaultVocabulary.builder
       .optMinFrequency(1)
       .addFromTextFile(path)
       .optUnknownToken("[UNK]")

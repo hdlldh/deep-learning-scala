@@ -1,14 +1,15 @@
 package ai.dhu.tensorflow.nlp
 
+import java.util
+
 import ai.djl.modality.Classifications
 import ai.djl.modality.nlp.Vocabulary
 import ai.djl.modality.nlp.bert.BertFullTokenizer
 import ai.djl.ndarray.NDList
 import ai.djl.translate.{Batchifier, Translator, TranslatorContext}
 
-import java.util
-
-class BertRankTranslator(var tokenizer: BertFullTokenizer, var length: Int) extends Translator[String, Classifications] {
+class BertRankTranslator(var tokenizer: BertFullTokenizer, var length: Int)
+    extends Translator[String, Classifications] {
 
   private val vocab: Vocabulary = tokenizer.getVocabulary
   private val ranks: util.List[String] = util.Arrays.asList("1", "2", "3", "4", "5")
