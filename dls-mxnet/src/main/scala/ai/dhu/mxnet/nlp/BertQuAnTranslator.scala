@@ -1,16 +1,17 @@
 package ai.dhu.mxnet.nlp
 
+import java.io.IOException
+import java.nio.file.Paths
+import java.util
+
+import scala.jdk.CollectionConverters._
+
 import ai.djl.modality.nlp.DefaultVocabulary
 import ai.djl.modality.nlp.bert.BertTokenizer
 import ai.djl.modality.nlp.qa.QAInput
 import ai.djl.ndarray.NDList
 import ai.djl.ndarray.types.Shape
 import ai.djl.translate.{NoBatchifyTranslator, TranslatorContext}
-
-import java.io.IOException
-import java.nio.file.Paths
-import java.util
-import scala.jdk.CollectionConverters._
 
 class BertQuAnTranslator extends NoBatchifyTranslator[QAInput, String] {
 
@@ -21,8 +22,7 @@ class BertQuAnTranslator extends NoBatchifyTranslator[QAInput, String] {
   @throws[IOException]
   override def prepare(ctx: TranslatorContext): Unit = {
     val path = Paths.get("build/mxnet/bert-qa/vocab.json").toUri.toURL
-    vocabulary = DefaultVocabulary
-      .builder
+    vocabulary = DefaultVocabulary.builder
       .optMinFrequency(1)
       .addFromCustomizedFile(path, VocabParser.parseToken)
       .optUnknownToken("[UNK]")
@@ -33,7 +33,6 @@ class BertQuAnTranslator extends NoBatchifyTranslator[QAInput, String] {
   def toFloatArray(list: util.List[_ <: Number]): Array[Float] = {
     list.asScala.map(r => r.floatValue()).toArray
   }
-
 
   override def processInput(ctx: TranslatorContext, input: QAInput): NDList = {
     val token = tokenizer.encode(input.getQuestion.toLowerCase, input.getParagraph.toLowerCase, 384)

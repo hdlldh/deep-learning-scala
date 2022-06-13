@@ -1,9 +1,9 @@
 package ai.dhu.tensorflow
 
+import scala.jdk.CollectionConverters._
+
 import ai.djl.repository.zoo.ModelZoo
 import org.slf4j.LoggerFactory
-
-import scala.jdk.CollectionConverters._
 
 object ListModels {
 

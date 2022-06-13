@@ -9,12 +9,14 @@ object BertQuAnDownloader {
     DownloadUtils.download(
       "https://djl-ai.s3.amazonaws.com/mlrepo/model/nlp/question_answer/ai/djl/pytorch/bertqa/0.0.1/bert-base-uncased-vocab.txt.gz",
       "build/pytorch/bert-qa/vocab.txt",
-      new ProgressBar)
+      new ProgressBar
+    )
 
     DownloadUtils.download(
       "https://djl-ai.s3.amazonaws.com/mlrepo/model/nlp/question_answer/ai/djl/pytorch/bertqa/0.0.1/trace_bertqa.pt.gz",
       "build/pytorch/bert-qa/bert-qa.pt",
-      new ProgressBar)
+      new ProgressBar
+    )
   }
 
 }

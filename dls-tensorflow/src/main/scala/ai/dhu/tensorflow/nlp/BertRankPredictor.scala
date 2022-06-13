@@ -1,20 +1,19 @@
 package ai.dhu.tensorflow.nlp
 
+import java.nio.file.Paths
+
 import ai.djl.modality.Classifications
 import ai.djl.modality.nlp.DefaultVocabulary
 import ai.djl.modality.nlp.bert.BertFullTokenizer
 import ai.djl.repository.zoo.Criteria
 import ai.djl.training.util.ProgressBar
 
-import java.nio.file.Paths
-
 object BertRankPredictor {
   def main(args: Array[String]): Unit = {
 
     val modelDir = Paths.get("build/tensorflow/bert-rank")
     val vocabFile = modelDir.resolve("vocab.txt")
-    val vocabulary = DefaultVocabulary
-      .builder
+    val vocabulary = DefaultVocabulary.builder
       .optMinFrequency(1)
       .addFromTextFile(vocabFile)
       .optUnknownToken("[UNK]")
@@ -22,14 +21,14 @@ object BertRankPredictor {
     val tokenizer = new BertFullTokenizer(vocabulary, true)
     val maxTokenLength = 64 // cutoff tokens length
 
-
     val translator = new BertRankTranslator(tokenizer, maxTokenLength)
 
-    val criteria = Criteria
-      .builder
+    val criteria = Criteria.builder
       .setTypes(classOf[String], classOf[Classifications])
-      .optModelPath(modelDir).optTranslator(translator)
-      .optProgress(new ProgressBar).build
+      .optModelPath(modelDir)
+      .optTranslator(translator)
+      .optProgress(new ProgressBar)
+      .build
 
     val model = criteria.loadModel
 

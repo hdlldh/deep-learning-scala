@@ -1,12 +1,12 @@
 package ai.dhu.mxnet.nlp
 
-import ai.djl.util.JsonUtils
-import com.google.gson.annotations.SerializedName
-
 import java.io.{IOException, InputStreamReader}
 import java.net.URL
 import java.nio.charset.StandardCharsets
 import java.util
+
+import ai.djl.util.JsonUtils
+import com.google.gson.annotations.SerializedName
 
 class VocabParser {
   @SerializedName("idx_to_token")

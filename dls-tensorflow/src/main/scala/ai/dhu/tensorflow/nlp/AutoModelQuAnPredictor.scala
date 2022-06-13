@@ -5,7 +5,6 @@ import ai.djl.modality.nlp.qa.QAInput
 import ai.djl.repository.zoo.Criteria
 import ai.djl.training.util.ProgressBar
 
-
 object AutoModelQuAnPredictor {
   def main(args: Array[String]): Unit = {
     val question = "When did BBC Japan start broadcasting?"
@@ -20,7 +19,8 @@ object AutoModelQuAnPredictor {
       .setTypes(classOf[QAInput], classOf[String])
       .optFilter("backbone", "bert")
       .optEngine("PyTorch")
-      .optProgress(new ProgressBar).build
+      .optProgress(new ProgressBar)
+      .build
 
     val model = criteria.loadModel
     val predictor = model.newPredictor
