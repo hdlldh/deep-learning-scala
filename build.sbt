@@ -3,7 +3,7 @@ val djlVersion = "0.17.0"
 
 val slf4jApiArtifact = "org.slf4j" % "slf4j-api" % "1.7.36"
 val slf4jSimpleArtifact = "org.slf4j" % "slf4j-simple" % "1.7.36"
-val djlApi = "ai.djl" % "api" % "0.17.0"
+val djlApi = "ai.djl" % "api" % djlVersion
 val djlHfTokenizer = "ai.djl.huggingface" % "tokenizers" % djlVersion
 val djlMxnetEngine = "ai.djl.mxnet" % "mxnet-engine" % djlVersion
 val djlMxnetModelZoo = "ai.djl.mxnet" % "mxnet-model-zoo" % djlVersion
@@ -20,7 +20,8 @@ lazy val commonSettings = Seq(
     //    scalaTestArtifact,
     slf4jApiArtifact,
     slf4jSimpleArtifact,
-    djlApi
+    djlApi,
+    djlHfTokenizer
   ),
   fork := true,
   organization := "org.meta.dhu",
