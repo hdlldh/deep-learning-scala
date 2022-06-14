@@ -31,8 +31,8 @@ object BertQuAnPredictor {
 
     predictor.close()
 
-    System.out.println(question)
-    System.out.println(predictResult)
+    println(question)
+    println(predictResult)
   }
 
 }
