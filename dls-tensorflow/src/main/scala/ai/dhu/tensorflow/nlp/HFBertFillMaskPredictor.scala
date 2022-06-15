@@ -1,4 +1,4 @@
-package ai.dhu.pytorch.nlp
+package ai.dhu.tensorflow.nlp
 
 import java.nio.file.Paths
 
@@ -13,8 +13,8 @@ object HFBertFillMaskPredictor {
 
     val translator = new HFBertFillMaskTranslator()
     val criteria = Criteria.builder
-      .setTypes(classOf[String], classOf[Seq[PredictedToken]])
-      .optModelPath(Paths.get("build/huggingface/fill_mask/pytorch/bert-base-uncased/"))
+      .setTypes(classOf[String], classOf[String])
+      .optModelPath(Paths.get("build/huggingface/fill_mask/tensorflow/bert-base-uncased/"))
       .optTranslator(translator)
       .optProgress(new ProgressBar)
       .build
