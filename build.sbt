@@ -12,6 +12,7 @@ val djlPytorchModelZoo = "ai.djl.pytorch" % "pytorch-model-zoo" % djlVersion
 val djlTensorflowEngine = "ai.djl.tensorflow" % "tensorflow-engine" % djlVersion
 val djlTensorflowModelZoo = "ai.djl.tensorflow" % "tensorflow-model-zoo" % djlVersion
 val protobuf = "com.google.protobuf" % "protobuf-java" % "3.20.1"
+val jsonParser = "com.lihaoyi" %% "upickle" % "0.9.5"
 
 lazy val commonSettings = Seq(
   scalacOptions ++= Seq("-deprecation", "-feature", "-Xlint"), // , "-Xfatal-warnings"),
@@ -21,7 +22,8 @@ lazy val commonSettings = Seq(
     slf4jApiArtifact,
     slf4jSimpleArtifact,
     djlApi,
-    djlHfTokenizer
+    djlHfTokenizer,
+    jsonParser
   ),
   fork := true,
   organization := "org.meta.dhu",
