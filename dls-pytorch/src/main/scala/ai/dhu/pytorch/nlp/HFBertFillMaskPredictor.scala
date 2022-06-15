@@ -14,7 +14,7 @@ object HFBertFillMaskPredictor {
     val translator = new HFBertFillMaskTranslator()
     val criteria = Criteria.builder
       .setTypes(classOf[String], classOf[Seq[PredictedToken]])
-      .optModelPath(Paths.get("build/huggingface/fill_mask/pytorch/bert-base-uncased/"))
+      .optModelPath(Paths.get("build/huggingface/fill-mask/pytorch/bert-base-uncased/"))
       .optTranslator(translator)
       .optProgress(new ProgressBar)
       .build
