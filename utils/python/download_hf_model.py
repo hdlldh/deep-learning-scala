@@ -32,7 +32,7 @@ def download_hf_model(app, model_provider, model_name, max_length, num_labels=-1
                 model = AutoModelForQuestionAnswering.from_pretrained(model_name, config=config)
             elif app == "fill_mask":
                 model = AutoModelForMaskedLM.from_pretrained(model_name, config=config)
-        elif app in ["zero-shot-classification"]:
+        elif app in ["zero_shot_classification"]:
             config = AutoConfig.from_pretrained(model_name, torchscript=True)
             model = AutoModelForSequenceClassification.from_pretrained(model_name, config=config)
 
