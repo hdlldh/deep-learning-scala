@@ -96,5 +96,6 @@ if __name__ == "__main__":
 #     app = "question_answering"
 #     app = "text_classification"
     app = "zero-shot-classification"
-    output_path = f"{os.path.expanduser('~')}/Workspace/deep-learning-scala/build/huggingface"
+#     output_path = f"{os.path.expanduser('~')}/Workspace/deep-learning-scala/build/huggingface"
+    output_path = "../../build/huggingface"
     download_hf_model(app, model_provider, model_name, max_length, do_lower_case=do_lower_case, output_path=output_path)
