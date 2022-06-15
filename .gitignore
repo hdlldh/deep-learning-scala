@@ -3,8 +3,8 @@ target/
 .bsp/
 resources/
 build/
-jupyter/build/
-jupyter/.ipynb_checkpoints/
+notebook/build/
+notebook/.ipynb_checkpoints/
 
 # Vim stuff
 *.swp
