@@ -16,7 +16,7 @@ class HFBertFillMaskTranslator extends Translator[String, Seq[PredictedToken]] {
   private final val TopK = 5
 
   override def prepare(ctx: TranslatorContext): Unit = {
-    val path = Paths.get("build/huggingface/fill_mask/pytorch/bert-base-uncased/vocab.txt")
+    val path = Paths.get("build/huggingface/fill-mask/pytorch/bert-base-uncased/vocab.txt")
     vocabulary = DefaultVocabulary.builder
       .optMinFrequency(1)
       .addFromTextFile(path)

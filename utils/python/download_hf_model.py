@@ -4,8 +4,8 @@ import shutil
 import torch
 import transformers
 from transformers import (
-    AutoModelForSequenceClassification,
     AutoTokenizer,
+    AutoModelForSequenceClassification,
     AutoModelForQuestionAnswering,
     AutoModelForTokenClassification,
     AutoModelForMaskedLM,
@@ -20,19 +20,19 @@ from transformers import (
 def download_hf_model(app, model_provider, model_name, max_length, num_labels=-1, do_lower_case=True, output_path="."):
     tokenizer = AutoTokenizer.from_pretrained(model_name, do_lower_case=do_lower_case)
     if model_provider == "pytorch":
-        if app in ["text_classification", "token_classification"]:
+        if app in ["text-classification", "token-classification"]:
             config = AutoConfig.from_pretrained(model_name, num_labels=num_labels, torchscript=True)
-            if app == "text_classification":
+            if app == "text-classification":
                 model = AutoModelForSequenceClassification.from_pretrained(model_name, config=config)
-            elif app == "token_classification":
+            elif app == "token-classification":
                 model = AutoModelForTokenClassification.from_pretrained(model_name, config=config)
-        elif app in ["question_answering", "fill_mask"]:
+        elif app in ["question-answering", "fill-mask"]:
             config = AutoConfig.from_pretrained(model_name, torchscript=True)
-            if app == "question_answering":
+            if app == "question-answering":
                 model = AutoModelForQuestionAnswering.from_pretrained(model_name, config=config)
-            elif app == "fill_mask":
+            elif app == "fill-mask":
                 model = AutoModelForMaskedLM.from_pretrained(model_name, config=config)
-        elif app in ["zero_shot_classification"]:
+        elif app in ["zero-shot-classification"]:
             config = AutoConfig.from_pretrained(model_name, torchscript=True)
             model = AutoModelForSequenceClassification.from_pretrained(model_name, config=config)
 
@@ -60,17 +60,17 @@ def download_hf_model(app, model_provider, model_name, max_length, num_labels=-1
         tokenizer.save_pretrained(os.path.join(output_path, app, model_provider, model_name))
 
     elif model_provider == "tensorflow":
-        if app in ["text_classification", "token_classification"]:
+        if app in ["text-classification", "token-classification"]:
             config = AutoConfig.from_pretrained(model_name, num_labels=num_labels)
-            if app == "text_classification":
+            if app == "text-classification":
                 model = TFAutoModelForSequenceClassification.from_pretrained(model_name, config=config)
-            elif app == "token_classification":
+            elif app == "token-classification":
                 model = TFAutoModelForTokenClassification.from_pretrained(model_name, config=config)
-        elif app in ["question_answering", "fill_mask"]:
+        elif app in ["question-answering", "fill-mask"]:
             config = AutoConfig.from_pretrained(model_name)
-            if app == "question_answering":
+            if app == "question-answering":
                 model = TFAutoModelForQuestionAnswering.from_pretrained(model_name, config=config)
-            elif app == "fill_mask":
+            elif app == "fill-mask":
                 model = TFAutoModelForMaskedLM.from_pretrained(model_name, config=config)
         else:
             print("Unknown application: " + app)
