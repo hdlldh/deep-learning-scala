@@ -9,9 +9,9 @@ import ai.djl.translate.{Batchifier, Translator, TranslatorContext}
 
 class HFBertFillMaskTranslator extends Translator[String, Seq[PredictedToken]] {
 
+  private var tokens: Array[String] = _
   private var vocabulary: DefaultVocabulary = _
-  private var tokenizer: HuggingFaceTokenizer = _
-  private var tokenList: Array[String] = _
+  private final val tokenizer = HuggingFaceTokenizer.newInstance("bert-base-uncased")
   private final val MaskToken = "[MASK]"
   private final val TopK = 5
 
@@ -22,32 +22,27 @@ class HFBertFillMaskTranslator extends Translator[String, Seq[PredictedToken]] {
       .addFromTextFile(path)
       .optUnknownToken("[UNK]")
       .build
-    tokenizer = HuggingFaceTokenizer.newInstance("bert-base-uncased")
   }
 
   override def processInput(ctx: TranslatorContext, input: String): NDList = {
-    val token = tokenizer.encode(input.toLowerCase().replace(MaskToken.toLowerCase(), MaskToken))
-    // get the encoded tokens that would be used in precessOutput
-    tokenList = token.getTokens
-    // map the tokens(String) to indices(long)
+    val encoded = tokenizer.encode(input.toLowerCase().replace(MaskToken.toLowerCase(), MaskToken))
+    tokens = encoded.getTokens
 
     val manager = ctx.getNDManager
-    val indices = tokenList.map(vocabulary.getIndex)
-    val attentionMask = token.getAttentionMask.map(i => i)
-    val indicesArray = manager.create(indices)
+    val tokenIds = encoded.getIds
+    val attentionMask = encoded.getAttentionMask
+    val tokenIdsArray = manager.create(tokenIds)
     val attentionMaskArray = manager.create(attentionMask)
-
-    new NDList(indicesArray, attentionMaskArray)
+    new NDList(tokenIdsArray, attentionMaskArray)
   }
 
   override def processOutput(ctx: TranslatorContext, list: NDList): Seq[PredictedToken] = {
-    val maskIndex = tokenList.zipWithIndex.find(_._1 == MaskToken).map(_._2).getOrElse(-1)
+    val maskIndex = tokens.zipWithIndex.find(_._1 == MaskToken).map(_._2).getOrElse(-1)
     if (maskIndex == -1) {
       Seq.empty[PredictedToken]
     } else {
       val ndArray = list.get(0)
-      val shape = ndArray.getShape
-      val len = shape.get(1)
+      val len = ndArray.size(1)
 
       (1 to TopK).map { i =>
         val out = ndArray.get(maskIndex).argSort().getLong(len - i)
