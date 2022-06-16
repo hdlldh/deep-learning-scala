@@ -89,7 +89,7 @@ if __name__ == "__main__":
     model_name = "facebook/bart-large-mnli"
     num_labels = -1
     max_length = 512
-    do_lower_case = False
+    do_lower_case = True
     model_provider = "pytorch"
 #     model_provider = "tensorflow"
 #     app = "fill_mask"
