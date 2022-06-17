@@ -7,14 +7,9 @@ import ai.djl.translate.{Batchifier, Translator, TranslatorContext}
 
 class HFBartZeroShotClsTranslator extends Translator[QAInput, Float] {
 
-  private final val tokenizer = HuggingFaceTokenizer.newInstance("facebook/bart-large-mnli")
-  private final val EosToken = "</s>"
-  private final val SepToken = "</s>"
-  private final val UnkToken = "<unk>"
-
-  override def prepare(ctx: TranslatorContext): Unit = {
-
-  }
+  final val tokenizer = HuggingFaceTokenizer.newInstance("facebook/bart-large-mnli")
+  final val EosToken = "</s>"
+  final val SepToken = "</s>"
 
   override def processInput(ctx: TranslatorContext, input: QAInput): NDList = {
     val encoded = tokenizer.encode(Array(input.getQuestion, EosToken, SepToken, input.getParagraph))

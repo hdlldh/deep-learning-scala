@@ -1,6 +1,8 @@
 package ai.dhu.pytorch.nlp
 
-import java.nio.file.Paths
+import java.nio.file.{Path, Paths}
+
+import scala.collection.mutable.ArrayBuffer
 
 import ai.djl.huggingface.tokenizers.HuggingFaceTokenizer
 import ai.djl.modality.nlp.DefaultVocabulary
@@ -9,24 +11,24 @@ import ai.djl.translate.{Batchifier, Translator, TranslatorContext}
 
 class HFBertFillMaskTranslator extends Translator[String, Seq[PredictedToken]] {
 
-  private var tokens: Array[String] = _
-  private var vocabulary: DefaultVocabulary = _
-  private final val tokenizer = HuggingFaceTokenizer.newInstance("bert-base-uncased")
-  private final val MaskToken = "[MASK]"
-  private final val TopK = 5
+  final val MaskToken = "[MASK]"
+  final val UnkToken = "[UNK]"
+  final val TopK = 5
 
-  override def prepare(ctx: TranslatorContext): Unit = {
-    val path = Paths.get("build/huggingface/fill-mask/pytorch/bert-base-uncased/vocab.txt")
-    vocabulary = DefaultVocabulary.builder
-      .optMinFrequency(1)
-      .addFromTextFile(path)
-      .optUnknownToken("[UNK]")
-      .build
-  }
+  val path: Path = Paths.get("build/huggingface/fill-mask/pytorch/bert-base-uncased/vocab.txt")
+  val tokenizer: HuggingFaceTokenizer = HuggingFaceTokenizer.newInstance("bert-base-uncased")
+  val tokens: ArrayBuffer[String] = ArrayBuffer.empty[String]
+  val vocabulary: DefaultVocabulary = DefaultVocabulary.builder
+    .optMinFrequency(1)
+    .addFromTextFile(path)
+    .optUnknownToken(UnkToken)
+    .build
 
   override def processInput(ctx: TranslatorContext, input: String): NDList = {
+
     val encoded = tokenizer.encode(input.toLowerCase().replace(MaskToken.toLowerCase(), MaskToken))
-    tokens = encoded.getTokens
+    tokens.clear()
+    tokens ++= encoded.getTokens
 
     val manager = ctx.getNDManager
     val tokenIds = encoded.getIds
@@ -37,6 +39,7 @@ class HFBertFillMaskTranslator extends Translator[String, Seq[PredictedToken]] {
   }
 
   override def processOutput(ctx: TranslatorContext, list: NDList): Seq[PredictedToken] = {
+    
     val maskIndex = tokens.zipWithIndex.find(_._1 == MaskToken).map(_._2).getOrElse(-1)
     if (maskIndex == -1) {
       Seq.empty[PredictedToken]
