@@ -63,22 +63,35 @@ def download_hf_model(app, model_provider, model_name, max_length, num_labels=-1
         if app in ["text-classification", "token-classification"]:
             config = AutoConfig.from_pretrained(model_name, num_labels=num_labels)
             if app == "text-classification":
-                model = TFAutoModelForSequenceClassification.from_pretrained(model_name, config=config)
+                try:
+                    model = TFAutoModelForSequenceClassification.from_pretrained(model_name, config=config)
+                except:
+                    model = TFAutoModelForSequenceClassification.from_pretrained(model_name, config=config, from_pt=True)
             elif app == "token-classification":
-                model = TFAutoModelForTokenClassification.from_pretrained(model_name, config=config)
+                try:
+                    model = TFAutoModelForTokenClassification.from_pretrained(model_name, config=config)
+                except:
+                    model = TFAutoModelForTokenClassification.from_pretrained(model_name, config=config, from_pt=True)
         elif app in ["question-answering", "fill-mask"]:
             config = AutoConfig.from_pretrained(model_name)
             if app == "question-answering":
-                model = TFAutoModelForQuestionAnswering.from_pretrained(model_name, config=config)
+                try:
+                    model = TFAutoModelForQuestionAnswering.from_pretrained(model_name, config=config)
+                except:
+                    model = TFAutoModelForQuestionAnswering.from_pretrained(model_name, config=config, from_pt=True)
             elif app == "fill-mask":
-                model = TFAutoModelForMaskedLM.from_pretrained(model_name, config=config)
+                try:
+                    model = TFAutoModelForMaskedLM.from_pretrained(model_name, config=config)
+                except:
+                    model = TFAutoModelForMaskedLM.from_pretrained(model_name, config=config, from_pt=True)
         else:
             print("Unknown application: " + app)
             return
+        tokenizer.save_pretrained(os.path.join(output_path, app, model_provider, model_name))
         model_name = model_name.split("/")[-1]
         model(model.dummy_inputs)
-        model.save(os.path.join(output_path, app, model_provider, model_name))
-        tokenizer.save_pretrained(os.path.join(output_path, app, model_provider, model_name))
+#         model.save(os.path.join(output_path, app, model_provider, model_name))
+        model.save_pretrained(os.path.join(output_path, app, model_provider, model_name), saved_model=True)
 
 
 if __name__ == "__main__":
