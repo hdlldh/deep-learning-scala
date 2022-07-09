@@ -16,23 +16,24 @@ from transformers import (
     TFAutoModelForMaskedLM
 )
 
+from HfBaseModelType import HfBaseModelType as hfm
 
 def download_hf_model(app, model_provider, model_name, max_length, num_labels=-1, do_lower_case=True, output_path="."):
     tokenizer = AutoTokenizer.from_pretrained(model_name, do_lower_case=do_lower_case)
     if model_provider == "pytorch":
-        if app in ["text-classification", "token-classification"]:
+        if app in [hfm.TEXT_CLASSIFICATION, hfm.TOKEN_CLASSIFICATION]:
             config = AutoConfig.from_pretrained(model_name, num_labels=num_labels, torchscript=True)
-            if app == "text-classification":
+            if app == hfm.TEXT_CLASSIFICATION:
                 model = AutoModelForSequenceClassification.from_pretrained(model_name, config=config)
-            elif app == "token-classification":
+            elif app == hfm.TOKEN_CLASSIFICATION:
                 model = AutoModelForTokenClassification.from_pretrained(model_name, config=config)
-        elif app in ["question-answering", "fill-mask"]:
+        elif app in [hfm.QUESTION_ANSWERING, hfm.FILL_MASK]:
             config = AutoConfig.from_pretrained(model_name, torchscript=True)
-            if app == "question-answering":
+            if app == hfm.QUESTION_ANSWERING:
                 model = AutoModelForQuestionAnswering.from_pretrained(model_name, config=config)
-            elif app == "fill-mask":
+            elif app == hfm.FILL_MASK:
                 model = AutoModelForMaskedLM.from_pretrained(model_name, config=config)
-        elif app in ["zero-shot-classification"]:
+        elif app in [hfm.ZERO_SHOT_CLASSIFICATION]:
             config = AutoConfig.from_pretrained(model_name, torchscript=True)
             model = AutoModelForSequenceClassification.from_pretrained(model_name, config=config)
 
@@ -42,7 +43,7 @@ def download_hf_model(app, model_provider, model_name, max_length, num_labels=-1
 
         model.eval()
         dummy_input = "This is a dummy input for torch jit trace"
-        if app == "zero-shot-classification":
+        if app == hfm.ZERO_SHOT_CLASSIFICATION:
             hypothesis = "This example is test."
             inputs = tokenizer.encode(dummy_input, hypothesis, return_tensors='pt',
                                           truncation_strategy='only_first')
@@ -60,26 +61,26 @@ def download_hf_model(app, model_provider, model_name, max_length, num_labels=-1
         tokenizer.save_pretrained(os.path.join(output_path, app, model_provider, model_name))
 
     elif model_provider == "tensorflow":
-        if app in ["text-classification", "token-classification"]:
+        if app in [hfm.TEXT_CLASSIFICATION, hfm.TOKEN_CLASSIFICATION]:
             config = AutoConfig.from_pretrained(model_name, num_labels=num_labels)
-            if app == "text-classification":
+            if app == hfm.TEXT_CLASSIFICATION:
                 try:
                     model = TFAutoModelForSequenceClassification.from_pretrained(model_name, config=config)
                 except:
                     model = TFAutoModelForSequenceClassification.from_pretrained(model_name, config=config, from_pt=True)
-            elif app == "token-classification":
+            elif app == hfm.TOKEN_CLASSIFICATION:
                 try:
                     model = TFAutoModelForTokenClassification.from_pretrained(model_name, config=config)
                 except:
                     model = TFAutoModelForTokenClassification.from_pretrained(model_name, config=config, from_pt=True)
-        elif app in ["question-answering", "fill-mask"]:
+        elif app in [hfm.QUESTION_ANSWERING, hfm.FILL_MASK]:
             config = AutoConfig.from_pretrained(model_name)
-            if app == "question-answering":
+            if app == hfm.QUESTION_ANSWERING:
                 try:
                     model = TFAutoModelForQuestionAnswering.from_pretrained(model_name, config=config)
                 except:
                     model = TFAutoModelForQuestionAnswering.from_pretrained(model_name, config=config, from_pt=True)
-            elif app == "fill-mask":
+            elif app == hfm.FILL_MASK:
                 try:
                     model = TFAutoModelForMaskedLM.from_pretrained(model_name, config=config)
                 except:
